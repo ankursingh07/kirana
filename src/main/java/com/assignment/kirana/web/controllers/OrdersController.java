@@ -1,5 +1,6 @@
 package com.assignment.kirana.web.controllers;
 
+import com.assignment.kirana.dto.DateInBetweenDTO;
 import com.assignment.kirana.dto.OrdersDTO;
 import com.assignment.kirana.persistence.entity.OrdersEntity;
 import com.assignment.kirana.service.OrdersService;
@@ -18,14 +19,19 @@ public class OrdersController {
     private final OrdersService ordersService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Long addOrders(@Valid @RequestBody OrdersDTO ordersDTO) {
+    public long addOrders(@Valid @RequestBody OrdersDTO ordersDTO) {
         log.info("orderDTO = {}", ordersDTO.toString());
-        ordersService.addOrder(ordersDTO);
-        return 7L;
+        long orderId = ordersService.addOrder(ordersDTO);
+        return orderId;
     }
-
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public Iterable<OrdersEntity> getOrders() {
         return ordersService.getOrders();
+    }
+
+    @PostMapping(value = "/inbetween",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public Iterable<OrdersEntity> getOrdersForDateInBetween(@Valid @RequestBody DateInBetweenDTO dateInBetweenDTO) {
+        log.info("dateInBetweenDTO = {}", dateInBetweenDTO.toString());
+        return ordersService.getOrdersForDateInBetween(dateInBetweenDTO);
     }
 }
