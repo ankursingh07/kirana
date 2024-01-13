@@ -26,9 +26,14 @@ public class OrdersService {
         order.setNumberOfItems(ordersDTO.numberOfItems());
         if (ordersDTO.currency().equalsIgnoreCase("INR")) {
             order.setCostOfSingleItem(ordersDTO.costOfSingleItem());
-        } else {
+        }
+        else {
             FxRatesGetResponse response = fxRatesApi.conversionGet();
-            double inrConversionRate = response.rates().inr();
+            double inrConversionRate;
+            if(!response.success() || response == null)
+                inrConversionRate = 82.0;
+            else
+                inrConversionRate = response.rates().inr();
             double costInINR = ordersDTO.costOfSingleItem() * inrConversionRate;
             order.setCostOfSingleItem(costInINR);
         }
@@ -42,6 +47,10 @@ public class OrdersService {
     public Iterable<OrdersEntity> getOrders() {
         log.info("Fetching all orders...");
         Iterable<OrdersEntity> orders = ordersRepository.findAll();
+        if(!orders.iterator().hasNext()) {
+            log.warn("No data available");
+            // Can add Runtime Exception over here, depends on what the frontend requires!
+        }
         log.info("Returning the fetched data!");
         return orders;
     }
@@ -49,6 +58,10 @@ public class OrdersService {
     public Iterable<OrdersEntity> getOrdersForDateInBetween(DateInBetweenDTO dateInBetweenDTO) {
         log.info("Fetching all orders...");
         Iterable<OrdersEntity> orders = ordersRepository.findByDateIsBetween(dateInBetweenDTO.from(),dateInBetweenDTO.to());
+        if(!orders.iterator().hasNext()) {
+            log.warn("No data available");
+            // Can add Runtime Exception over here, depends on what the frontend requires!
+        }
         log.info("Returning the fetched data!");
         return orders;
     }
