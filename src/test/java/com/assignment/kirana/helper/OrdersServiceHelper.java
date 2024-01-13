@@ -32,7 +32,6 @@ public class OrdersServiceHelper {
 
     public static OrdersDTO getMockedOrderDTO() {
         return OrdersDTO.builder()
-                .orderId(7)
                 .buyer("test")
                 .item("test-item")
                 .numberOfItems(7)

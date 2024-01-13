@@ -33,7 +33,7 @@ public class OrdersServiceTest {
         when(ordersRepository.save(any())).thenReturn(getMockedOrdersEntity());
         when(fxRatesApi.conversionGet()).thenReturn(null);
         long orderId = ordersService.addOrder(getMockedOrderDTO());
-        assertEquals(orderId , 7);
+        assertEquals(orderId , 0);
     }
 
 }

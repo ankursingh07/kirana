@@ -1,9 +1,6 @@
 package com.assignment.kirana.persistence.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "order-details")
+@Table(name = "orderDetails")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,6 +21,8 @@ public class OrdersEntity {
 
     @Id
     @Column(name = "orderId", unique = true)
+    @SequenceGenerator(name = "SQ_GEN", sequenceName = "order-details-seq-gen", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_GEN")
     private long orderId;
 
     @Column(name = "buyer")
